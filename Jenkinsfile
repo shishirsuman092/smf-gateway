@@ -27,7 +27,6 @@ node() {
                    commit_id=$(git rev-parse --short HEAD)
                    echo $commit_id> commit_id.txt
                    docker build --no-cache -f Dockerfile -t $docker_server/$docker_repo:$commit_id .
-                   docker tag $docker_server/$docker_repo:$commit_id $docker_server/$docker_repo:$image_tag
                    '''
         }
          stage('docker-push') {
@@ -36,9 +35,7 @@ node() {
                   pwd
                   commit_id=$(git rev-parse --short HEAD)
                   docker push $docker_server/$docker_repo:$commit_id
-                  docker push $docker_server/$docker_repo:$image_tag
                   docker rmi -f $docker_server/$docker_repo:$commit_id
-                  docker rmi -f $docker_server/$docker_repo:$image_tag
                   '''
        }
 
